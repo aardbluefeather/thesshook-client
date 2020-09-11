@@ -1,5 +1,5 @@
 <template>
-  <v-footer id="public-footer" absolute color="transparent" dark>
+  <v-footer id="private-footer" color="transparent" dark>
     <v-container>
       Here be a Private Footer component!
     </v-container>

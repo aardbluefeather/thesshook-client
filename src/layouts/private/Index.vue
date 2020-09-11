@@ -1,10 +1,10 @@
 <template>
   <v-app>
-    <private-app-bar />
+    <private-app-bar v-model="expandOnHover" />
+
+    <private-drawer :expand-on-hover.sync="expandOnHover" />
 
     <private-view />
-
-    <private-footer />
   </v-app>
 </template>
 
@@ -14,8 +14,12 @@ export default {
 
   components: {
     PrivateAppBar: () => import('@/layouts/private/AppBar'),
-    PrivateFooter: () => import('@/layouts/private/Footer'),
+    PrivateDrawer: () => import('@/layouts/private/Drawer'),
     PrivateView: () => import('@/layouts/private/View')
-  }
+  },
+
+  data: () => ({
+    expandOnHover: false
+  })
 };
 </script>

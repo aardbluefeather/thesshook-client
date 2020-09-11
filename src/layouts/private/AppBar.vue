@@ -1,91 +1,156 @@
 <template>
-  <v-app-bar class="semitransparentblur" absolute flat height="85">
-    <v-container class="px-0 text-right d-flex align-center">
-      <v-toolbar-title
-        class="font-weight-light hidden-xs-only"
-        dark
-        v-text="title"
-      />
+  <v-app-bar class="semitransparentblur" absolute app flat height="75">
+    <v-btn
+      class="mr-3"
+      elevation="1"
+      fab
+      small
+      @click="
+        $vuetify.breakpoint.smAndDown
+          ? setDrawer(!drawer)
+          : $emit('input', !value)
+      "
+    >
+      <v-icon v-if="value">
+        mdi-view-quilt
+      </v-icon>
 
-      <v-spacer />
+      <v-icon v-else>
+        mdi-dots-vertical
+      </v-icon>
+    </v-btn>
+    <v-toolbar-title
+      class="hidden-sm-and-down font-weight-light"
+      v-text="$route.name"
+    />
 
-      <v-btn
-        v-for="(item, i) in items"
-        :key="i"
-        :to="item.to"
-        min-height="48"
-        min-width="40"
-        text
-        exact
-      >
-        <v-icon
-          :left="$vuetify.breakpoint.mdAndUp"
-          size="20"
-          v-text="item.icon"
-        />
+    <v-spacer />
 
-        <span class="hidden-sm-and-down" v-text="item.text" />
-      </v-btn>
-    </v-container>
+    <v-btn class="ml-2" min-width="0" text>
+      <v-icon>mdi-web</v-icon>
+    </v-btn>
+
+    <v-menu
+      bottom
+      left
+      offset-y
+      origin="top right"
+      transition="scale-transition"
+    >
+      <template v-slot:activator="{ attrs, on }">
+        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+          <v-badge color="red" overlap bordered>
+            <template v-slot:badge>
+              <span>5</span>
+            </template>
+
+            <v-icon>mdi-bell</v-icon>
+          </v-badge>
+        </v-btn>
+      </template>
+
+      <v-list :tile="false" nav>
+        <div>
+          <app-bar-item v-for="(n, i) in notifications" :key="`item-${i}`">
+            <v-list-item-title v-text="n" />
+          </app-bar-item>
+        </div>
+      </v-list>
+    </v-menu>
+
+    <v-menu
+      bottom
+      left
+      min-width="200"
+      offset-y
+      origin="top right"
+      transition="scale-transition"
+    >
+      <template v-slot:activator="{ attrs, on }">
+        <v-btn class="ml-2" min-width="0" text v-bind="attrs" v-on="on">
+          <v-icon>mdi-account</v-icon>
+        </v-btn>
+      </template>
+
+      <v-list :tile="false" flat nav>
+        <template v-for="(p, i) in profile">
+          <v-divider v-if="p.divider" :key="`divider-${i}`" class="mb-2 mt-2" />
+
+          <app-bar-item v-else :key="`item-${i}`" to="/private">
+            <v-list-item-title v-text="p.title" />
+          </app-bar-item>
+        </template>
+      </v-list>
+    </v-menu>
   </v-app-bar>
 </template>
 
 <script>
+import { VHover, VListItem } from 'vuetify/lib';
+import { mapState, mapMutations } from 'vuex';
+
 export default {
   name: 'PrivateAppBar',
 
-  data: () => ({
-    items: [
-      {
-        icon: 'mdi-home',
-        text: 'Home',
-        to: '/private'
-      },
-      {
-        icon: 'mdi-account',
-        text: 'Members',
-        to: '/private/members'
-      },
-      {
-        icon: 'mdi-map',
-        text: 'Maps',
-        to: '/private/maps'
-      },
-      {
-        icon: 'mdi-wrench-outline',
-        text: 'Gear',
-        to: '/private/gear'
-      },
-      {
-        icon: 'mdi-wrench-outline',
-        text: 'Scripts',
-        to: '/private/scripts'
-      },
-      {
-        icon: 'mdi-wrench-outline',
-        text: 'Guides',
-        to: '/private/guides'
-      },
-      {
-        icon: 'mdi-login',
-        text: 'Logout',
-        to: '/public'
+  components: {
+    AppBarItem: {
+      render(h) {
+        return h(VHover, {
+          scopedSlots: {
+            default: ({ hover }) => {
+              return h(
+                VListItem,
+                {
+                  attrs: this.$attrs,
+                  class: {
+                    'black--text': !hover,
+                    'white--text secondary elevation-12': hover
+                  },
+                  props: {
+                    activeClass: '',
+                    dark: hover,
+                    link: true,
+                    ...this.$attrs
+                  }
+                },
+                this.$slots.default
+              );
+            }
+          }
+        });
       }
-    ],
-    titles: {
-      '/private': 'Private Home Page',
-      '/private/members': 'Private Members Page',
-      '/private/maps': 'Private Maps Page',
-      '/private/gear': 'Private Gear Page',
-      '/private/scripts': 'Private Scripts Page',
-      '/private/guides': 'Private Guides Page',
     }
+  },
+
+  props: {
+    value: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  data: () => ({
+    notifications: [
+      'You have 2 new tasks',
+      'There are 10 new map updates',
+      'There is 1 new guide posted'
+    ],
+    profile: [
+      { title: 'Profile' },
+      { title: 'Settings' },
+      { divider: true },
+      { title: 'Log out' }
+    ]
   }),
 
   computed: {
-    title() {
-      return this.titles[this.$route.path];
-    }
+    ...mapState(['drawer'])
+  },
+
+  methods: {
+    ...mapMutations({
+      setDrawer: 'SET_DRAWER'
+    })
   }
 };
 </script>

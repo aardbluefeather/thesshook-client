@@ -20,9 +20,9 @@
       <v-list-item-avatar
         v-else-if="item.avatar"
         class="align-self-center"
-        color="grey"
+        color="transparent"
       >
-        <v-img src="https://picsum.photos/id/237/300/300" />
+        <v-img :src="require('@/assets/logo.png')" />
       </v-list-item-avatar>
 
       <v-list-item-content>

@@ -16,9 +16,9 @@ export default new Router({
       component: () => import('@/layouts/public/Index'),
       children: [
         {
-          name: 'Home',
+          name: 'Hook',
           path: '',
-          component: () => import('@/views/public/Home'),
+          component: () => import('@/views/public/Hook'),
         },
         {
           name: 'Maps',
@@ -43,9 +43,9 @@ export default new Router({
       children: [
         // Dashboard
         {
-          name: 'Home',
+          name: 'Dashboard',
           path: '',
-          component: () => import('@/views/private/Home'),
+          component: () => import('@/views/private/Dashboard'),
         },
         {
           name: 'Members',
@@ -53,23 +53,23 @@ export default new Router({
           component: () => import('@/views/private/Members'),
         },
         {
-          name: 'Maps',
+          name: 'Maps+',
           path: 'maps',
           component: () => import('@/views/private/Maps'),
         },
         {
           name: 'Gear',
-          path: 'gear',
+          path: 'tools/gear',
           component: () => import('@/views/private/Gear'),
         },
         {
           name: 'Scripts',
-          path: 'scripts',
+          path: 'tools/scripts',
           component: () => import('@/views/private/Scripts'),
         },
         {
           name: 'Guides',
-          path: 'guides',
+          path: 'tools/guides',
           component: () => import('@/views/private/Guides'),
         },
       ],

@@ -1,5 +1,5 @@
 <template>
-  <v-content
+  <v-main
     id="public"
     :class="$vuetify.theme.dark ? undefined : 'grey lighten-3'"
   >
@@ -22,7 +22,7 @@
         </v-responsive>
       </v-img>
     </v-fade-transition>
-  </v-content>
+  </v-main>
 </template>
 
 <script>

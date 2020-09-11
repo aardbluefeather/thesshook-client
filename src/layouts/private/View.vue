@@ -1,6 +1,6 @@
 <template>
-  <v-content
-    id="public"
+  <v-main
+    id="private"
     :class="$vuetify.theme.dark ? undefined : 'grey lighten-3'"
   >
     <v-fade-transition mode="out-in">
@@ -20,21 +20,26 @@
         >
           <router-view />
         </v-responsive>
+        <private-footer />
       </v-img>
     </v-fade-transition>
-  </v-content>
+  </v-main>
 </template>
 
 <script>
 export default {
-  name: 'PublicView',
+  name: 'PrivateView',
+
+  components: {
+    PrivateFooter: () => import('@/layouts/private/Footer')
+  },
 
   data: () => ({
     srcs: {
-      '/public/lock': 'lock.jpg',
-      '/public/login': 'login.jpg',
-      '/public/pricing': 'pricing.jpg',
-      '/public/register': 'register.jpg'
+      '/private/lock': 'lock.jpg',
+      '/private/login': 'login.jpg',
+      '/private/pricing': 'pricing.jpg',
+      '/private/register': 'register.jpg'
     }
   }),
 
